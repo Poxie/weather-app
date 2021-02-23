@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getWeatherByLocation } from '../app/WeatherLogic';
+import { getWeatherByLocation, toggleFavorite } from '../app/WeatherLogic';
 import { Favorite } from './Favorite';
 
 interface Weather {
@@ -10,6 +10,7 @@ interface Weather {
         name: string;
     },
     current: CurrentWeatherData;
+    order: number;
 }
 interface CurrentWeatherData {
     condition: {
@@ -28,26 +29,36 @@ interface CurrentWeatherData {
 }
 export const Favorites = () => {
     const [favorites, setFavorites] = useState<Weather[]>([]);
+    const [names, setNames] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         let favoriteLocations = window.localStorage.favorites;
-        if(favoriteLocations.length > 0) {
+        if(favoriteLocations?.length) {
             favoriteLocations = JSON.parse(favoriteLocations);
-            const favorites: Weather[] = [];
+            let favorites: Weather[] = [];
             favoriteLocations.forEach(async (location: string) => {
                 const favorite = await getWeatherByLocation(location);
+                favorite.order = favoriteLocations.indexOf(location);
                 favorites.push(favorite);
                 if(favorites.length === favoriteLocations.length) {
+                    favorites = favorites.sort((a,b) => (a.order > b.order) ? 1 : ((b.order > a.order) ? -1 : 0))
                     setFavorites(favorites);
+                    setNames(favoriteLocations);
                     setLoading(false);
                 }
             })
         }
-        if(favoriteLocations.length === 0) {
+        if(!favoriteLocations?.length) {
             setLoading(false);
+            setFavorites([]);
         }
-    }, []);
+    }, [names]);
+
+    const toggle = (location: string) => {
+        const newFavorites = toggleFavorite(location);
+        setNames(newFavorites);
+    }
 
     return(
         <div className="favorites">
@@ -70,6 +81,7 @@ export const Favorites = () => {
                                     location={favorite.location.name}
                                     current_temp={favorite.current.temp_c}
                                     condition={favorite.current.condition}
+                                    toggle={() => toggle(favorite.location.name)}
                                     key={key}
                                 />
                             )
