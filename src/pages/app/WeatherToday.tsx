@@ -8,6 +8,7 @@ import { WeatherContent } from './WeatherContent';
 import { usePopups } from '../../contexts/PopupContext';
 import { Popup } from '../../popups/Popup';
 import { getWeatherByLocation } from './WeatherLogic';
+import { Navbar } from '../../components/Navbar';
 
 interface Props extends RouteComponentProps {
     props: any;
@@ -70,12 +71,18 @@ const WeatherToday = (props: Props) => {
     const setPopup = (e: any) => {
         if(!e) return;
         const rect = e.currentTarget.getBoundingClientRect();
-        const { top, left } = rect;
+        let { top, left } = rect;
         const height = e.currentTarget.offsetHeight;
         const width = e.currentTarget.offsetWidth;
         const text = e.currentTarget.getAttribute('tooltip-text');
+
+        top = top - height;
+        if(e.currentTarget.getAttribute('tooltip-lowered')) {
+            top += 20;
+        }
+        left = left + width / 2;
         popups.setPopup(
-            <Popup top={top - height} left={left + width / 2}>
+            <Popup top={top} left={left}>
                 <span>
                     {text}
                 </span>
@@ -100,7 +107,8 @@ const WeatherToday = (props: Props) => {
             elements.forEach(element => {
                 element.removeEventListener('mouseenter', setPopup);
                 element.removeEventListener('mouseleave', removePopup)
-            })
+            });
+            popups.setPopup(null);
         }
     }, [weather])
 
@@ -108,6 +116,7 @@ const WeatherToday = (props: Props) => {
 
     return(
         <div className="weather">
+            <Navbar />
             <WeatherHeader 
                 feels_like={currentWeather.feelslike_c}
                 location={weather.location.name}
@@ -115,6 +124,7 @@ const WeatherToday = (props: Props) => {
                 temp={currentWeather.temp_c}
                 weather={currentWeather.condition.text}
                 weatherIcon={currentWeather.condition.icon}
+                is_day={currentWeather.is_day}
             />
             <WeatherContent 
                 forecast={weather.forecast.forecastday}
