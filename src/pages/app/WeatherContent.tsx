@@ -76,7 +76,7 @@ export const WeatherContent: React.FC<Props> = ({forecast}) => {
                         })}
                         <span className="active-forecast-line" ref={line}></span>
                     </div>
-                    <div className="forecast-container flex column space-between">
+                    <div className="forecast-container flex space-between">
                         {activeHours.map((forecastHour, key) => {
                             return(
                                 <ForecastHour 
