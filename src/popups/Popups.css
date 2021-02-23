@@ -1,0 +1,33 @@
+.popups {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 14;
+    display: block;
+    pointer-events: none;
+}
+.popups .popup {
+    pointer-events: none;
+    position: absolute;
+    opacity: 0;
+}
+.popup-content {
+    background-color: rgb(24, 24, 24);
+    padding: 8px 15px;
+    border-radius: 3px;
+    position: relative;
+}
+.popup-content::after {
+    content: '';
+    position: absolute;
+    bottom: -17px;
+    border: 10px solid rgb(24, 24, 24);
+    display: block;
+    left: 50%;
+    transform: translateX(-50%);
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+}
