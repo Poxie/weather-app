@@ -7,6 +7,7 @@ import './WeatherToday.css';
 import { WeatherContent } from './WeatherContent';
 import { usePopups } from '../../contexts/PopupContext';
 import { Popup } from '../../popups/Popup';
+import { getWeatherByLocation } from './WeatherLogic';
 
 interface Props extends RouteComponentProps {
     props: any;
@@ -59,16 +60,10 @@ const WeatherToday = (props: Props) => {
     const [weather, setWeather] = useState<Weather | null>(null);
 
     useEffect(() => {
-        axios.get(`${config["api_endpoint"]}?q=${location}&units=metric&appid=${config["api_key"]}`)
+        getWeatherByLocation(location)
             .then(response => {
-                const locationString = response.data.name;
-
-                axios.get(`http://api.weatherapi.com/v1/forecast.json?q=${locationString}&days=5&key=677a94af32e249ffb63192541201511`)
-                    .then(response => {
-                        const data = response.data;
-                        setCurrentWeather(data.current);
-                        setWeather({forecast: data.forecast, location: data.location})
-                    });
+                setCurrentWeather(response.current);
+                setWeather({forecast: response.forecast, location: response.location})
             })
     }, [location]);
 
