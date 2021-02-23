@@ -9,6 +9,7 @@ import { usePopups } from '../../contexts/PopupContext';
 import { Popup } from '../../popups/Popup';
 import { getWeatherByLocation } from './WeatherLogic';
 import { Navbar } from '../../components/Navbar';
+import { Loading } from '../../components/Loading';
 
 interface Props extends RouteComponentProps {
     props: any;
@@ -112,7 +113,11 @@ const WeatherToday = (props: Props) => {
         }
     }, [weather])
 
-    if(!currentWeather || !weather) return <div></div>;
+    if(!currentWeather || !weather) return (
+        <div className="flex align-center justify-center" style={{height: '100vh'}}>
+            <Loading />
+        </div>
+    );
 
     return(
         <div className="weather">
