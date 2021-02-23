@@ -31,6 +31,7 @@ export const ForecastHour: React.FC<Props> = ({temp_c, feelslike_c, condition, w
                 </div>
                 <WeatherIcon 
                     iconURL={condition.icon}
+                    text={condition.text}
                 />
                 {chance_of_rain > 0 ? (
                     <span className="chance-of-rain silent" has-tooltip="true" tooltip-text={`Chance of rain: ${chance_of_rain}%`}>
@@ -39,12 +40,16 @@ export const ForecastHour: React.FC<Props> = ({temp_c, feelslike_c, condition, w
                 ) : null}
             </div>
             <div className="temperature flex align-center">
-                <span has-tooltip="true" tooltip-text={`Currently: ${temp_c}°C`}>
-                    {temp_c}°C
-                </span>
-                <span className="feels-like silent" has-tooltip="true" tooltip-text={`Feels like: ${feelslike_c}°C`}>
-                    {feelslike_c}°C
-                </span>
+                <div className="temp">
+                    <span has-tooltip="true" tooltip-text={`Currently: ${temp_c}°C`}>
+                        {temp_c}°C
+                    </span>
+                </div>
+                <div className="feels-like">
+                    <span className="silent" has-tooltip="true" tooltip-text={`Feels like: ${feelslike_c}°C`}>
+                        {feelslike_c}°C
+                    </span>
+                </div>
             </div>
         </div>
     )
