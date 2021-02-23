@@ -1,0 +1,125 @@
+.container {
+    width: 1100px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+.weather-header {
+    overflow: hidden;
+    position: relative;
+}
+.weather-header .container {
+    padding: 10% 0;
+    max-width: 90%;
+}
+.weather-header h1 {
+    margin: 0;
+    font-size: 35px;
+}
+.weather-header h4 {
+    margin: 0;
+    font-size: 25px;
+}
+.weather-header video {
+    width: 100%;
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    opacity: .5;
+}
+.weather-header .weather-icon {
+    height: 70px;
+}
+.weather-header .weather-icon img {
+    width: 100px;
+}
+
+.weather-content {
+    background: linear-gradient(to top, rgba(42,67,101,1) 0%, rgba(19, 30, 46, 1) 90%, rgba(19, 30, 46, 0) 100%);
+    transform: translateY(-65px);
+    position: relative;
+    z-index: 2;
+}
+.weather-content .container {
+    padding-top: 100px;
+}
+
+.forecast-selector {
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+    margin-left: -14px;
+}
+.forecast .weather-icon img {
+    width: 40px;
+}
+.forecast-day {
+    margin-left: 10px;
+}
+.forecast-day span {
+    color: #a6a6a6;
+    font-size: 14px;
+    line-height: 10px;
+}
+.forecast-item .temperature {
+    margin-left: 5px;
+    font-weight: 600;
+}
+.forecast-item {
+    padding: 12px 14px 12px 10px;
+    margin-right: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+.forecast-item:hover {
+    background-color: #192d49;
+}
+.active-forecast-line {
+    background-color: #2a4264;
+    height: 3px;
+    position: absolute;
+    left: 0;
+    transition: width .3s, left .3s;
+    border-radius: 120px;
+}
+
+.forecast-container {
+    margin-top: 15px;
+    flex-wrap: wrap;
+}
+.forecast-hour {
+    padding: 5px 0;
+    margin-right: 80px;
+}
+.forecast-hour .hour {
+    font-size: 18px;
+    color: #a6a6a6;
+    font-weight: 600;
+    min-width: 40px;
+}
+.forecast-hour .condition {
+    width: 140px;
+}
+
+.forecast-hour .temperature span {
+    font-size: 18px;
+    width: 55px;
+    text-align: right;
+}
+.feels-like {
+    margin-left: 10px;
+}
+
+@media only screen and (max-width: 600px) {
+    .forecast-selector {
+        padding-left: 25px;
+    }
+    .forecast-container {
+        max-width:85%;
+        margin: 0 auto;
+    }
+    .forecast-container .forecast-hour {
+        margin: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+}
