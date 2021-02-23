@@ -15,9 +15,15 @@
     margin: 0;
     font-size: 35px;
 }
-.weather-header h4 {
+.weather-header h2 {
     margin: 0;
     font-size: 25px;
+}
+.weather-header .favorite-btn {
+    margin-left: 10px;
+}
+.weather-header .favorite-btn svg {
+    fill: #fff;
 }
 .weather-header video {
     width: 100%;
@@ -45,8 +51,6 @@
 
 .forecast-selector {
     position: relative;
-    overflow-x: auto;
-    overflow-y: hidden;
     margin-left: -14px;
 }
 .forecast .weather-icon img {
@@ -104,6 +108,9 @@
     font-size: 18px;
     width: 55px;
     text-align: right;
+}
+.forecast-hour .temperature {
+    min-width: 125px;
 }
 .feels-like {
     margin-left: 10px;
