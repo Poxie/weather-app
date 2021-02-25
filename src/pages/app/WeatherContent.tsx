@@ -41,21 +41,28 @@ export const WeatherContent: React.FC<Props> = ({forecast}) => {
 
     const activeHours = forecast[activeForecast].hour;
 
-    useEffect(() => {
-        if(!line.current) return;
-        
+    const updateLineStyles = () => {
         const activeForecast = document.querySelector('.forecast-item.active');
         if(!activeForecast) return;
         const rect = activeForecast.getBoundingClientRect();
-        const { top, left } = rect;
         // @ts-ignore
-        line.current.style.top = `${activeForecast.offsetHeight}px`;
+        line.current.style.bottom = 0;
         // @ts-ignore
         line.current.style.left = `${activeForecast.offsetLeft}px`;
         // @ts-ignore
         line.current.style.width = activeForecast.offsetWidth + 'px';
+    }
 
+    useEffect(() => {
+        if(!line.current) return;
+        updateLineStyles();
     }, [activeForecast]);
+
+    useEffect(() => {
+        window.addEventListener('resize', updateLineStyles);
+
+        return () => window.removeEventListener('resize', updateLineStyles);
+    }, []);
 
     return(
         <div className="weather-content">
@@ -86,6 +93,7 @@ export const WeatherContent: React.FC<Props> = ({forecast}) => {
                                     condition={forecastHour.condition}
                                     timestamp={forecastHour.time_epoch}
                                     chance_of_rain={forecastHour.chance_of_rain}
+                                    key={key}
                                 />
                             )
                         })}
