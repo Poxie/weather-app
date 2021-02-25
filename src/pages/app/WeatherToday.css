@@ -23,7 +23,8 @@
     margin-left: 10px;
 }
 .weather-header .favorite-btn svg {
-    fill: #fff;
+    fill: #aeff00;
+    cursor: pointer;
 }
 .weather-header video {
     width: 100%;
@@ -111,14 +112,35 @@
 }
 .forecast-hour .temperature {
     min-width: 125px;
+    justify-items: flex-end;
 }
 .feels-like {
     margin-left: 10px;
 }
 
 @media only screen and (max-width: 600px) {
+    .navbar .search-input {
+        padding: 0 15px;
+    }
+    .navbar .search-input, .search-input input {
+        width: 100% !important;
+    }
+    .weather-header .container {
+        padding-top: 80px;
+    }
+    .weather-content .container {
+        padding-top: 70px;
+    }
+    .weather-header .weather-icon {
+        display: none;
+    }
     .forecast-selector {
         padding-left: 25px;
+        overflow-x: auto !important;
+        overflow-y: hidden;
+    }
+    .forecast-selector::-webkit-scrollbar {
+        display: none;
     }
     .forecast-container {
         max-width:85%;
