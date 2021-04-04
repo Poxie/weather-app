@@ -1,4 +1,6 @@
 import React from 'react';
+import { Flex } from '../../components/Flex';
+import { Tooltip } from '../../components/Tooltip';
 import { usePopups } from '../../contexts/PopupContext';
 import { Popup } from '../../popups/Popup';
 import { WeatherIcon } from './WeatherIcon';
@@ -34,23 +36,29 @@ export const ForecastHour: React.FC<Props> = ({temp_c, feelslike_c, condition, w
                     text={condition.text}
                 />
                 {chance_of_rain > 0 ? (
-                    <span className="chance-of-rain silent" has-tooltip="true" tooltip-text={`Chance of rain: ${chance_of_rain}%`}>
-                        {chance_of_rain}%
-                    </span>
+                    <Tooltip text={`Chance of rain ${chance_of_rain}%`}>
+                        <span className="chance-of-rain silent">
+                            {chance_of_rain}%
+                        </span>
+                    </Tooltip>
                 ) : null}
             </div>
-            <div className="temperature flex align-center">
+            <Flex className="temperature" alignItems={'center'}>
                 <div className="temp">
-                    <span has-tooltip="true" tooltip-text={`Currently: ${temp_c}°C`}>
-                        {temp_c}°C
-                    </span>
+                    <Tooltip text={`Actually ${temp_c}°C`}>
+                        <span className="silent">
+                            {temp_c}°C
+                        </span>
+                    </Tooltip>
                 </div>
                 <div className="feels-like">
-                    <span className="silent" has-tooltip="true" tooltip-text={`Feels like: ${feelslike_c}°C`}>
-                        {feelslike_c}°C
-                    </span>
+                    <Tooltip text={`Feels like ${feelslike_c}°C`}>
+                        <span className="silent">
+                            {feelslike_c}°C
+                        </span>
+                    </Tooltip>
                 </div>
-            </div>
+            </Flex>
         </div>
     )
 }

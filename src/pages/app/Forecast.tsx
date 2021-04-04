@@ -21,6 +21,7 @@ export const Forecast: React.FC<Props> = ({average_temp, condition, day_unixtime
         <div className={`forecast-item${active ? ' active' : ''} flex align-center`} onClick={onClick}>
             <WeatherIcon 
                 iconURL={condition.icon}
+                text={condition.text}
             />
             <div className="temperature">
                 {average_temp}°C
