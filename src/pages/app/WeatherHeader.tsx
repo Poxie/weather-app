@@ -14,7 +14,7 @@ interface Props {
     weatherIcon: string;
     is_day: number;
 }
-export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_like, weather, weatherIcon, is_day}) => {
+const getIsFavorite = (location: string) => {
     let favorite = false;
     const favoriteLocations = window.localStorage.favorites;
     if(favoriteLocations) {
@@ -23,7 +23,11 @@ export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_l
             favorite = true;
         }
     }
+    return favorite;
+}
+export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_like, weather, weatherIcon, is_day}) => {
     const [background, setBackground] = useState(undefined);
+    const favorite = getIsFavorite(location);
     const [isFavorite, setIsFavorite] = useState(favorite)
     const countryString = country !== location ? `${location}, ${country}` : location;
 
@@ -38,8 +42,8 @@ export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_l
     }
 
     useEffect(() => {
-        return () => setIsFavorite(false);
-    }, [])
+        setIsFavorite(getIsFavorite(location));
+    }, [location])
 
     return(
         <div className={`weather-header ${weather.toLowerCase()}`}>
