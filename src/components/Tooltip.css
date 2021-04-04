@@ -1,0 +1,25 @@
+.has-tooltip {
+    position: relative;
+}
+.has-tooltip .tooltip {
+    position: absolute;
+    white-space: nowrap;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--tooltip-bg);
+    padding: 6px 10px;
+    border-radius: 4px;
+    pointer-events: none;
+}
+.tooltip::after {
+    content: '';
+    border: var(--tooltip-bg) 8px solid;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+    border-right-color: transparent;
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
