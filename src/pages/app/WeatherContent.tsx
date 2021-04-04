@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { Flex } from '../../components/Flex';
 import { Forecast } from './Forecast';
+import { ForecastContainer } from './ForecastContainer';
 import { ForecastHour } from './ForecastHour';
+import { ForecastSelector } from './ForecastSelector';
 
 interface Props {
     forecast: Forecast[];
@@ -36,68 +39,20 @@ interface CurrentWeatherData {
 }
 export const WeatherContent: React.FC<Props> = ({forecast}) => {
     const [activeForecast, setActiveForecast] = useState(0);
-    const [lineStyle, setLineStyle] = useState();
-    const line = useRef(null);
-
     const activeHours = forecast[activeForecast].hour;
-
-    const updateLineStyles = () => {
-        const activeForecast = document.querySelector('.forecast-item.active');
-        if(!activeForecast) return;
-        const rect = activeForecast.getBoundingClientRect();
-        // @ts-ignore
-        line.current.style.bottom = 0;
-        // @ts-ignore
-        line.current.style.left = `${activeForecast.offsetLeft}px`;
-        // @ts-ignore
-        line.current.style.width = activeForecast.offsetWidth + 'px';
-    }
-
-    useEffect(() => {
-        if(!line.current) return;
-        updateLineStyles();
-    }, [activeForecast]);
-
-    useEffect(() => {
-        window.addEventListener('resize', updateLineStyles);
-
-        return () => window.removeEventListener('resize', updateLineStyles);
-    }, []);
 
     return(
         <div className="weather-content">
             <div className="container">
                 <div className="forecast">
-                    <div className="forecast-selector flex">
-                        {forecast.map((forecast, key) => {
-                            return(
-                                <Forecast 
-                                    average_temp={forecast.day.avgtemp_c}
-                                    condition={forecast.day.condition}
-                                    day_unixtime={forecast.date_epoch}
-                                    active={key === activeForecast}
-                                    onClick={() => setActiveForecast(key)}
-                                    key={key}
-                                />
-                            )
-                        })}
-                        <span className="active-forecast-line" ref={line}></span>
-                    </div>
-                    <div className="forecast-container flex space-between">
-                        {activeHours.map((forecastHour, key) => {
-                            return(
-                                <ForecastHour 
-                                    temp_c={forecastHour.temp_c}
-                                    feelslike_c={forecastHour.feelslike_c}
-                                    wind_kph={forecastHour.wind_kph}
-                                    condition={forecastHour.condition}
-                                    timestamp={forecastHour.time_epoch}
-                                    chance_of_rain={forecastHour.chance_of_rain}
-                                    key={key}
-                                />
-                            )
-                        })}
-                    </div>
+                    <ForecastSelector 
+                        activeForecast={activeForecast}
+                        setActiveForecast={setActiveForecast}
+                        forecast={forecast}
+                    />
+                    <ForecastContainer 
+                        hours={activeHours}
+                    />
                 </div>
             </div>
         </div>
