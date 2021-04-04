@@ -1,5 +1,7 @@
 import { count } from 'console';
 import React, { useEffect, useState } from 'react';
+import { Flex } from '../../components/Flex';
+import { Tooltip } from '../../components/Tooltip';
 import { WeatherIcon } from './WeatherIcon';
 import { getBackground, toggleFavorite } from './WeatherLogic';
 
@@ -13,15 +15,16 @@ interface Props {
     is_day: number;
 }
 export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_like, weather, weatherIcon, is_day}) => {
-    const [background, setBackground] = useState(undefined);
+    let favorite = false;
     const favoriteLocations = window.localStorage.favorites;
-    let isFavorite = false;
     if(favoriteLocations) {
         const favorites = JSON.parse(favoriteLocations);
         if(favorites.includes(location)) {
-            isFavorite = true;
+            favorite = true;
         }
     }
+    const [background, setBackground] = useState(undefined);
+    const [isFavorite, setIsFavorite] = useState(favorite)
     const countryString = country !== location ? `${location}, ${country}` : location;
 
     useEffect(() => {
@@ -29,12 +32,17 @@ export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_l
         setBackground(background)
     }, [location, weather]);
 
+    const handleFavoriteToggle = (location: string) => {
+        setIsFavorite(previous => !previous);
+        toggleFavorite(location);
+    }
+
     return(
         <div className={`weather-header ${weather.toLowerCase()}`}>
             {background ? (
                 <video muted autoPlay src={background}></video>
             ) : null}
-            <div className="container flex">
+            <Flex className="container">
                 <WeatherIcon 
                     iconURL={weatherIcon}
                     text={weather}
@@ -50,16 +58,18 @@ export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_l
                     </h1>
                     <h2 className="location flex align-center">
                         {countryString}
-                        <div className="favorite-btn flex align-center" has-tooltip="true" tooltip-text={`${isFavorite ? ' Remove from' : 'Add to'} favorites`}>
-                            {isFavorite ? (
-                                <svg onClick={() => toggleFavorite(location)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
-                            ) : (
-                                <svg onClick={() => toggleFavorite(location)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524-4.721 2.525.942-5.27-3.861-3.71 5.305-.733 2.335-4.817zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z"/></svg>
-                            )}
+                        <div className="favorite-btn flex align-center">
+                            <Tooltip text={`${isFavorite ? ' Remove from' : 'Add to'} favorites`}>
+                                {isFavorite ? (
+                                    <svg onClick={() => handleFavoriteToggle(location)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 .587l3.668 7.568 8.332 1.151-6.064 5.828 1.48 8.279-7.416-3.967-7.417 3.967 1.481-8.279-6.064-5.828 8.332-1.151z"/></svg>
+                                ) : (
+                                    <svg onClick={() => handleFavoriteToggle(location)} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path d="M12 5.173l2.335 4.817 5.305.732-3.861 3.71.942 5.27-4.721-2.524-4.721 2.525.942-5.27-3.861-3.71 5.305-.733 2.335-4.817zm0-4.586l-3.668 7.568-8.332 1.151 6.064 5.828-1.48 8.279 7.416-3.967 7.416 3.966-1.48-8.279 6.064-5.827-8.332-1.15-3.668-7.569z"/></svg>
+                                )}
+                            </Tooltip>
                         </div>
                     </h2>
                 </div>
-            </div>
+            </Flex>
         </div>
     )
 }
