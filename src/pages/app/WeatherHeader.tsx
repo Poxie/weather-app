@@ -37,6 +37,10 @@ export const WeatherHeader: React.FC<Props> = ({location, country, temp, feels_l
         toggleFavorite(location);
     }
 
+    useEffect(() => {
+        return () => setIsFavorite(false);
+    }, [])
+
     return(
         <div className={`weather-header ${weather.toLowerCase()}`}>
             {background ? (
