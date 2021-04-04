@@ -69,50 +69,6 @@ const WeatherToday = (props: Props) => {
             })
     }, [location]);
 
-    const setPopup = (e: any) => {
-        if(!e) return;
-        const rect = e.currentTarget.getBoundingClientRect();
-        let { top, left } = rect;
-        const height = e.currentTarget.offsetHeight;
-        const width = e.currentTarget.offsetWidth;
-        const text = e.currentTarget.getAttribute('tooltip-text');
-
-        top = top - height;
-        if(e.currentTarget.getAttribute('tooltip-lowered')) {
-            top += 20;
-        }
-        left = left + width / 2;
-        popups.setPopup(
-            <Popup top={top} left={left}>
-                <span>
-                    {text}
-                </span>
-            </Popup>
-        )
-    }
-    const removePopup = () => {
-        popups.setPopup(null);
-    }
-
-    // Adding tooltip functionality
-    useEffect(() => {
-        const elements = document.querySelectorAll('[has-tooltip="true"]');
-        if(!elements) return;
-
-        elements.forEach(element => {
-            element.addEventListener('mouseenter', setPopup);
-            element.addEventListener('mouseleave', removePopup)
-        })
-
-        return () => {
-            elements.forEach(element => {
-                element.removeEventListener('mouseenter', setPopup);
-                element.removeEventListener('mouseleave', removePopup)
-            });
-            popups.setPopup(null);
-        }
-    }, [weather])
-
     if(!currentWeather || !weather) return (
         <div className="flex align-center justify-center" style={{height: '100vh'}}>
             <Loading />
